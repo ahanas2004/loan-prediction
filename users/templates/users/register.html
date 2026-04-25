@@ -1,0 +1,341 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Oracle | Register</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --primary: #0f172a;
+            --secondary: #1e293b;
+            --accent: #10b981;
+            --accent-hover: #059669;
+            --danger: #ef4444;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(15, 23, 42, 0.6);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Background Overlay */
+        .bg-gradient-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            z-index: -1;
+        }
+
+        /* --- MAIN CARD --- */
+        .register-card {
+            background: var(--secondary);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 1100px;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* --- LEFT PANEL (INFO) --- */
+        .left-panel {
+            background: linear-gradient(135deg, var(--accent) 0%, #065f46 100%);
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+        /* Decorative Circles */
+        .left-panel::before, .left-panel::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .left-panel::before { width: 300px; height: 300px; top: -100px; left: -100px; }
+        .left-panel::after { width: 200px; height: 200px; bottom: -50px; right: -50px; }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        .feature-list li {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+        .feature-list i {
+            background: rgba(255, 255, 255, 0.2);
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        /* --- RIGHT PANEL (FORM) --- */
+        .right-panel {
+            padding: 60px 50px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-title h2 { color: #fff; font-weight: 600; }
+        .form-title p { color: #94a3b8; }
+
+        /* --- INPUT FIELDS --- */
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            z-index: 2;
+        }
+
+        /* Customizing the Django Form Inputs */
+        .input-wrapper input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 12px 15px 12px 45px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            background: rgba(15, 23, 42, 1);
+        }
+
+        .password-rules {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        /* --- BUTTONS --- */
+        .btn-register {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            color: white;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        .login-link a { color: var(--accent); font-weight: 500; }
+        .login-link a:hover { text-decoration: underline; color: var(--accent-hover); }
+
+        /* --- ALERTS --- */
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 991px) {
+            .left-panel { display: none; }
+            .right-panel { padding: 40px 20px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-gradient-overlay"></div>
+
+    <div class="container">
+        <div class="register-card">
+            <div class="row g-0">
+                
+                <div class="col-lg-5 d-none d-lg-block">
+                    <div class="left-panel">
+                        <h2 class="fw-bold mb-3">Join Loan Oracle</h2>
+                        <p style="opacity: 0.9;">Create an account to access premium banking analytics, AI-driven insights, and secure asset management.</p>
+                        
+                        <ul class="feature-list">
+                            <li><i class="fas fa-shield-alt"></i> Enterprise-grade security</li>
+                            <li><i class="fas fa-chart-line"></i> Predictive financial models</li>
+                            <li><i class="fas fa-bolt"></i> Real-time processing</li>
+                            <li><i class="fas fa-headset"></i> Dedicated support</li>
+                            <li><i class="fas fa-mobile-alt"></i> Seamless mobile access</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="right-panel">
+                        <div class="form-title text-center mb-4">
+                            <h2>Create Account</h2>
+                            <p>Join our secure financial community</p>
+                        </div>
+
+                        <form method="POST" action="{% url 'users:register' %}">
+                            {% csrf_token %}
+                            
+                            {% if form.errors %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <div id="form_errors">
+                                        {% for field, errors in form.errors.items %}
+                                            {% for error in errors %}
+                                                <i class="fas fa-exclamation-circle me-2"></i> <strong>{{ field|title }}:</strong> {{ error }}<br>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-user"></i>
+                                    {{ form.username }}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-envelope"></i>
+                                    {{ form.email }}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="first_name">First Name</label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-id-card"></i>
+                                            {{ form.first_name }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="last_name">Last Name</label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-id-card"></i>
+                                            {{ form.last_name }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password1">Password</label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-lock"></i>
+                                    {{ form.password1 }}
+                                </div>
+                                <p class="password-rules">At least 8 chars, mix of letters & numbers.</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password2">Confirm Password</label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-check-circle"></i>
+                                    {{ form.password2 }}
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-register">
+                                Create Account <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </form>
+
+                        <div class="login-link">
+                            <p>Already have an account? <a href="{% url 'users:login' %}">Sign In</a></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Ensure standard Django widget rendering aligns with custom styles
+        // This script adds the transparent background styles to inputs rendered by Django
+        document.addEventListener("DOMContentLoaded", function() {
+            var inputs = document.querySelectorAll('input');
+            inputs.forEach(function(input) {
+                // Apply placeholder color logic if needed or specific classes
+                input.classList.add('bg-transparent'); 
+                input.style.border = "none";
+                input.style.width = "100%";
+                input.style.outline = "none";
+                input.style.color = "white";
+                input.style.background = "transparent";
+            });
+        });
+    </script>
+</body>
+</html>

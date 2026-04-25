@@ -1,0 +1,332 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Oracle | Secure Login</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --primary: #0f172a;
+            --secondary: #1e293b;
+            --accent: #10b981;
+            --accent-hover: #059669;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(15, 23, 42, 0.6);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Background Overlay */
+        .bg-gradient-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            z-index: -1;
+        }
+
+        /* --- LOGIN CARD --- */
+        .glass-container {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--glass-border);
+            animation: fadeIn 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative top gradient line */
+        .glass-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--accent), #065f46);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .icon-circle {
+            width: 80px; height: 80px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .icon-circle i {
+            font-size: 32px;
+            color: var(--accent);
+        }
+
+        .logo h1 {
+            color: white;
+            font-weight: 600;
+            font-size: 1.75rem;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* --- INPUTS --- */
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            z-index: 2;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            outline: none;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            background: rgba(15, 23, 42, 1);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        /* --- OPTIONS & BUTTONS --- */
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .remember input {
+            accent-color: var(--accent);
+            margin-right: 5px;
+        }
+
+        .forgot {
+            color: var(--accent);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .forgot:hover { color: var(--accent-hover); text-decoration: underline; }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            color: white;
+        }
+
+        /* --- SOCIAL --- */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0 20px;
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+        .divider::before, .divider::after {
+            content: ""; flex: 1; height: 1px; background: var(--glass-border);
+        }
+        .divider span { padding: 0 15px; }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-btn {
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .social-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 30px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        .signup-link a { color: var(--accent); font-weight: 600; text-decoration: none; }
+        .signup-link a:hover { text-decoration: underline; }
+
+        /* --- ALERTS --- */
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-gradient-overlay"></div>
+
+    <div class="glass-container">
+        <div class="logo">
+            <div class="icon-circle">
+                <i class="fas fa-fingerprint"></i>
+            </div>
+            <h1>Welcome Back</h1>
+            <p>Securely access your financial dashboard</p>
+        </div>
+
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <div id="form_errors">
+                {% for key, value in form.errors.items %}
+                    <i class="fas fa-exclamation-circle me-2"></i> {{ value }}
+                {% endfor %}
+            </div>
+            <button type="button" class="btn-close btn-close-white" onclick="this.parentElement.style.display='none';" aria-label="Close"></button>
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                {{ form.username }}
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                {{ form.password }}
+            </div>
+
+            <div class="options">
+                <label class="remember">
+                    <input type="checkbox"> Remember me
+                </label>
+                <a href="#" class="forgot">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn-login">
+                Sign In <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+        </form>
+
+        <div class="divider"><span>Or continue with</span></div>
+
+        <div class="social-login">
+            <div class="social-btn" title="Google">
+                <i class="fab fa-google"></i>
+            </div>
+            <div class="social-btn" title="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </div>
+            <div class="social-btn" title="Twitter">
+                <i class="fab fa-twitter"></i>
+            </div>
+        </div>
+
+        <div class="signup-link">
+            Don't have an account yet? <a href="{% url 'users:register' %}">Create account</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Apply styles to Django rendered inputs dynamically to ensure they match
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputs = document.querySelectorAll('input:not([type="checkbox"])');
+            inputs.forEach(input => {
+                input.style.backgroundColor = "rgba(15, 23, 42, 0.6)";
+                input.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+                input.style.color = "white";
+                if(!input.placeholder) {
+                    if(input.name === 'username') input.placeholder = 'Username';
+                    if(input.name === 'password') input.placeholder = 'Password';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

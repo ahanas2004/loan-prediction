@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Home Loan EMI </title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #e0f7fa, #ffffff);
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.container h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.calculator-container {
+    margin-top: 20px;
+  
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+h4 {
+    margin-top: 20px;
+    font-weight: 600;
+    color: #00695c;
+}
+
+#monthlyEmi, #predictedEmi {
+    color: #d84315;
+}
+
+canvas {
+    margin-top: 30px;
+    width: 100% !important;
+    height: auto !important;
+}
+
+.container1 {
+    max-width: 1100px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.container1 h1 {
+    text-align: center;
+    color: #2e7d32;
+    margin-bottom: 20px;
+}
+
+.container1 h2 {
+    color: #1565c0;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.container1 ul, .container1 ol {
+    margin-left: 20px;
+}
+
+.container1 ul li, .container1 ol li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+strong {
+    color: #d84315;
+}
+
+.container1 p {
+    line-height: 1.8;
+    margin-top: 10px;
+}
+
+ul li:hover, ol li:hover {
+    background-color: #f1f8e9;
+    padding: 5px;
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+
+@media screen and (max-width: 768px) {
+    .container, .container1 {
+        margin: 20px;
+        padding: 20px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🏡  Home Loan EMI </h2>
+    <div class="calculator-container">
+        <form>
+            <div class="form-group">
+                <label for="loanAmountRange">Loan Amount (₹): <span id="loanAmountLabel">500000</span></label>
+                <input type="range" id="loanAmountRange" min="100000" max="1000000" step="1000" value="500000">
+            </div>
+            <div class="form-group">
+                <label for="interestRateRange">Interest Rate (%): <span id="interestRateLabel">10</span></label>
+                <input type="range" id="interestRateRange" min="5" max="15" step="0.1" value="10">
+            </div>
+            <div class="form-group">
+                <label for="loanTenureRange">Loan Tenure (Years): <span id="loanTenureLabel">5</span></label>
+                <input type="range" id="loanTenureRange" min="1" max="30" step="1" value="5">
+            </div>
+        </form>
+        <h4>Current Monthly EMI: <span id="monthlyEmi">₹0</span></h4>
+        <h4>Predicted EMI: <span id="predictedEmi">₹0</span></h4>
+    </div>
+    
+    <div class="calculator-container">
+        <canvas id="emiChart"></canvas>
+    </div>
+</div>
+<div class="container1">
+    <h1>Home Loan Information</h1>
+
+    <h2>Eligibility Criteria</h2>
+    <ul>
+        <li>Applicant must be at least 21 years old at the time of loan application and not more than 65 years at loan maturity.</li>
+        <li>Minimum monthly income should be above ₹30,000 (may vary as per lender's policy).</li>
+        <li>Employment: Salaried, self-employed professionals, or business owners with stable income sources.</li>
+        <li>Good credit score (preferably above 750) with a clean repayment history.</li>
+        <li>Applicant should have a minimum of 2 years of work experience or business continuity.</li>
+    </ul>
+
+    <h2>Documents Required</h2>
+    <ul>
+        <li><strong>Identity Proof:</strong> Aadhar Card, PAN Card, Passport, Voter ID, or Driving License.</li>
+        <li><strong>Address Proof:</strong> Utility Bills, Rental Agreement, Passport, or Driving License.</li>
+        <li><strong>Income Proof:</strong> 
+            <ul>
+                <li>Salaried: Last 3 months’ salary slips, Form 16, and last 6 months’ bank statements.</li>
+                <li>Self-employed: Last 3 years’ ITR, Profit & Loss Account, Balance Sheet, and Bank Statements.</li>
+            </ul>
+        </li>
+        <li><strong>Property Documents:</strong> Sale Agreement, Title Deed, Approved Building Plan, and NOC from the builder/society.</li>
+        <li><strong>Photographs:</strong> Passport-sized recent photographs.</li>
+    </ul>
+
+    <h2>Interest Rates & Loan Tenure</h2>
+    <p>Interest rates range from <strong>6.5% to 9.5%</strong> per annum, depending on the applicant’s profile, credit score, and market conditions. Loan tenure options are flexible, ranging from <strong>5 years to 30 years</strong>.</p>
+
+    <h2>Loan Features & Benefits</h2>
+    <ul>
+        <li>Up to <strong>90% financing</strong> of property value based on eligibility.</li>
+        <li><strong>Balance transfer</strong> facility to reduce interest burden.</li>
+        <li>Top-up loan option available.</li>
+        <li>Quick processing and minimal documentation.</li>
+        <li>Prepayment and foreclosure options without extra charges (conditions apply).</li>
+    </ul>
+
+    <h2>Types of Home Loans</h2>
+    <ul>
+        <li><strong>Home Purchase Loan:</strong> For buying a new or resale residential property.</li>
+        <li><strong>Home Construction Loan:</strong> For constructing a new home on own plot.</li>
+        <li><strong>Home Improvement Loan:</strong> For renovation, repair, or extension of existing house.</li>
+        <li><strong>Home Loan Balance Transfer:</strong> To transfer an existing loan to another lender at lower interest rates.</li>
+        <li><strong>Top-Up Loan:</strong> Additional loan amount over and above the existing home loan.</li>
+    </ul>
+
+    <h2>Additional Charges</h2>
+    <ul>
+        <li>Processing Fee: 0.25% to 1% of loan amount (may vary by bank).</li>
+        <li>Legal & Technical Charges.</li>
+        <li>Prepayment/Foreclosure Charges (only in specific cases).</li>
+        <li>Stamp Duty & Registration Charges (for property purchase).</li>
+    </ul>
+
+    <h2>How to Apply?</h2>
+    <ol>
+        <li>Check your loan eligibility and calculate EMI using an online calculator.</li>
+        <li>Choose the loan amount and tenure as per your repayment capacity.</li>
+        <li>Submit the application form with necessary documents.</li>
+        <li>Wait for document verification and property evaluation.</li>
+        <li>Once approved, sign the agreement and receive the sanctioned amount.</li>
+    </ol>
+
+    <h2>Important Tips</h2>
+    <ul>
+        <li>Maintain a good credit score for better interest rates.</li>
+        <li>Compare loan offers from multiple banks before finalizing.</li>
+        <li>Read all terms and conditions carefully.</li>
+        <li>Opt for affordable EMIs to avoid financial stress.</li>
+    </ul>
+</div>
+
+
+<script>
+    const loanAmountRange = document.getElementById('loanAmountRange');
+    const interestRateRange = document.getElementById('interestRateRange');
+    const loanTenureRange = document.getElementById('loanTenureRange');
+    const loanAmountLabel = document.getElementById('loanAmountLabel');
+    const interestRateLabel = document.getElementById('interestRateLabel');
+    const loanTenureLabel = document.getElementById('loanTenureLabel');
+    const monthlyEmi = document.getElementById('monthlyEmi');
+    const predictedEmi = document.getElementById('predictedEmi');
+    const emiChartCanvas = document.getElementById('emiChart');
+
+    const updateValues = () => {
+        loanAmountLabel.textContent = loanAmountRange.value;
+        interestRateLabel.textContent = interestRateRange.value;
+        loanTenureLabel.textContent = loanTenureRange.value;
+        calculateEMI();
+    };
+
+    const calculateEMI = () => {
+        const loanAmount = parseFloat(loanAmountRange.value);
+        const interestRate = parseFloat(interestRateRange.value) / 100 / 12;
+        const loanTenure = parseFloat(loanTenureRange.value) * 12;
+
+        const emi = (loanAmount * interestRate * Math.pow(1 + interestRate, loanTenure)) / (Math.pow(1 + interestRate, loanTenure) - 1);
+        monthlyEmi.textContent = `₹${emi.toFixed(2)}`;
+
+        // Predict EMI for 2024 (Assume a slight 1% rate increase)
+        const predictedRate = (parseFloat(interestRateRange.value) + 1) / 100 / 12;
+        const predictedEMI = (loanAmount * predictedRate * Math.pow(1 + predictedRate, loanTenure)) / (Math.pow(1 + predictedRate, loanTenure) - 1);
+        predictedEmi.textContent = `₹${predictedEMI.toFixed(2)}`;
+
+        updateChart(loanAmount, emi, predictedEMI);
+    };
+
+    const updateChart = (loanAmount, emi, predictedEMI) => {
+        const interestAmount = (emi * (parseFloat(loanTenureRange.value) * 12) - loanAmount).toFixed(2);
+        const predictedInterest = (predictedEMI * (parseFloat(loanTenureRange.value) * 12) - loanAmount).toFixed(2);
+
+        const chartData = {
+            labels: ['Principal', 'Interest (Current)', 'Interest (Predicted 2024)'],
+            datasets: [{
+                label: 'EMI Breakdown',
+                data: [loanAmount, interestAmount, predictedInterest],
+                backgroundColor: ['#36a2eb', '#ffcd56', '#ff6384']
+            }]
+        };
+
+        if (window.myChart) {
+            window.myChart.data = chartData;
+            window.myChart.update();
+        } else {
+            window.myChart = new Chart(emiChartCanvas, {
+                type: 'bar',
+                data: chartData
+            });
+        }
+    };
+
+    loanAmountRange.addEventListener('input', updateValues);
+    interestRateRange.addEventListener('input', updateValues);
+    loanTenureRange.addEventListener('input', updateValues);
+
+    calculateEMI();
+</script>
+

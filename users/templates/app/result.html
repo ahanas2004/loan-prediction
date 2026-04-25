@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Insights Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --churn-bg: #ffebee;
+            --stayed-bg: #e8f5e9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            font-size: 32px;
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .prediction-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .prediction-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            padding: 20px 30px;
+            background: linear-gradient(120deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header.churn {
+            background: linear-gradient(120deg, #e74c3c 0%, #c0392b 100%);
+        }
+        
+        .card-header.stayed {
+            background: linear-gradient(120deg, #2ecc71 0%, #27ae60 100%);
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .card-title i {
+            font-size: 28px;
+        }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .badge-churn {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .badge-stayed {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .card-content {
+            padding: 30px;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        .icon-churn {
+            background-color: #ffebee;
+            color: #e74c3c;
+        }
+        
+        .icon-stayed {
+            background-color: #e8f5e9;
+            color: #2ecc71;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-title {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .info-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .info-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-size: 18px;
+        }
+        
+        .info-section h3 i {
+            color: var(--secondary);
+        }
+        
+        .info-list {
+            list-style-type: none;
+        }
+        
+        .info-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .info-list li i {
+            color: var(--secondary);
+            margin-top: 5px;
+        }
+        
+        .customer-opinions {
+            background: #f8f9fa;
+            border-left: 4px solid var(--secondary);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 25px 0;
+        }
+        
+        .customer-opinions h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .opinion {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+        }
+        
+        .opinion:last-child {
+            margin-bottom: 0;
+        }
+        
+        .opinion strong {
+            color: var(--secondary);
+        }
+        
+        .card-footer {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .user-actions {
+                justify-content: center;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <h1>Customer Insights Dashboard</h1>
+            </div>
+            <div class="user-actions">
+                <button class="btn btn-outline">
+                    <i class="fas fa-download"></i> Export Report
+                </button>
+               <a href="{% url 'users:churn' %}" class="btn btn-primary">
+                  <i class="fas fa-sync-alt"></i> Analyze New Customer
+              </a>
+            </div>
+        </header>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon icon-churn">
+                    <i class="fas fa-user-times"></i>
+                </div>
+                <div class="stat-value">23%</div>
+                <div class="stat-title">Churn Rate</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon icon-stayed">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="stat-value">77%</div>
+                <div class="stat-title">Retention Rate</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color: #e3f2fd; color: #2196f3;">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <div class="stat-value">68%</div>
+                <div class="stat-title">Satisfaction Score</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color: #fff3e0; color: #ff9800;">
+                    <i class="fas fa-hand-holding-usd"></i>
+                </div>
+                <div class="stat-value">$142</div>
+                <div class="stat-title">Avg. Save per Retention</div>
+            </div>
+        </div>
+        
+        {% if prediction_text == 'Churn' %}
+        <div class="prediction-card">
+            <div class="card-header churn">
+                <div class="card-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2>Customer Churn Predicted</h2>
+                </div>
+                <div class="status-badge badge-churn">High Risk</div>
+            </div>
+            
+            <div class="card-content">
+                <p style="margin-bottom: 20px;">Our analysis indicates this customer has a <strong>high probability of churning</strong>. Immediate action is recommended to retain this customer.</p>
+                
+                <div class="info-grid">
+                    <div class="info-section">
+                        <h3><i class="fas fa-times-circle"></i> Reasons for Churn</h3>
+                        <ul class="info-list">
+                            <li><i class="fas fa-chevron-right"></i> Poor customer service experience</li>
+                            <li><i class="fas fa-chevron-right"></i> Lack of personalized services</li>
+                            <li><i class="fas fa-chevron-right"></i> Higher fees compared to competitors</li>
+                            <li><i class="fas fa-chevron-right"></i> Limited access to online banking features</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3><i class="fas fa-lightbulb"></i> Retention Strategies</h3>
+                        <ul class="info-list">
+                            <li><i class="fas fa-chevron-right"></i> Implement customer feedback mechanisms</li>
+                            <li><i class="fas fa-chevron-right"></i> Enhance customer service training</li>
+                            <li><i class="fas fa-chevron-right"></i> Introduce loyalty programs</li>
+                            <li><i class="fas fa-chevron-right"></i> Improve digital banking services</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h3><i class="fas fa-star"></i> Recommendations</h3>
+                    <p>Engaging with customers through personalized communication and offering tailored solutions can significantly improve customer satisfaction. Regular training sessions for staff on customer handling and conflict resolution can also help in maintaining a positive relationship with clients.</p>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-user-check"></i> Implement Retention Plan
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-times"></i> Dismiss
+                    </button>
+                </div>
+                <div class="report-date">Report generated: October 28, 2023</div>
+            </div>
+        </div>
+        {% elif prediction_text == 'Stayed' %}
+        <div class="prediction-card">
+            <div class="card-header stayed">
+                <div class="card-title">
+                    <i class="fas fa-check-circle"></i>
+                    <h2>Customer Retention Predicted</h2>
+                </div>
+                <div class="status-badge badge-stayed">Low Risk</div>
+            </div>
+            
+            <div class="card-content">
+                <p style="margin-bottom: 20px;">Our analysis indicates this customer has a <strong>high probability of staying</strong> with your services. This customer represents a valuable relationship.</p>
+                
+                <div class="customer-opinions">
+                    <h3><i class="fas fa-comment-alt"></i> Why Customers Stay</h3>
+                    <div class="opinion">
+                        <strong>Customer Opinion 1:</strong> "The customer service is exceptional; I always feel valued."
+                    </div>
+                    <div class="opinion">
+                        <strong>Customer Opinion 2:</strong> "The bank offers personalized financial solutions tailored to my needs."
+                    </div>
+                    <div class="opinion">
+                        <strong>Customer Opinion 3:</strong> "I appreciate the community involvement and support for local events."
+                    </div>
+                    <div class="opinion">
+                        <strong>Customer Opinion 4:</strong> "The online banking system is user-friendly and efficient."
+                    </div>
+                </div>
+                
+                <div class="info-grid">
+                    <div class="info-section">
+                        <h3><i class="fas fa-award"></i> Strengths to Maintain</h3>
+                        <ul class="info-list">
+                            <li><i class="fas fa-chevron-right"></i> Exceptional customer service</li>
+                            <li><i class="fas fa-chevron-right"></i> Personalized financial solutions</li>
+                            <li><i class="fas fa-chevron-right"></i> Strong community involvement</li>
+                            <li><i class="fas fa-chevron-right"></i> User-friendly digital platforms</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3><i class="fas fa-chart-line"></i> Growth Opportunities</h3>
+                        <ul class="info-list">
+                            <li><i class="fas fa-chevron-right"></i> Cross-selling additional services</li>
+                            <li><i class="fas fa-chevron-right"></i> Referral programs</li>
+                            <li><i class="fas fa-chevron-right"></i> Premium service tiers</li>
+                            <li><i class="fas fa-chevron-right"></i> Expanded digital features</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-bullhorn"></i> Engage for Referrals
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-times"></i> Dismiss
+                    </button>
+                </div>
+                <div class="report-date">Report generated: October 28, 2023</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Simple animation for cards when they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.prediction-card, .stat-card');
+            
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            
+            setTimeout(() => {
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100 * index);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>

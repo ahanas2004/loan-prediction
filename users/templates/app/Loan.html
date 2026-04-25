@@ -1,0 +1,221 @@
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Oracle | Loan Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --primary: #0f172a; --secondary: #1e293b; --accent: #10b981; --accent-hover: #059669;
+            --glass: rgba(255, 255, 255, 0.05); --glass-border: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(15, 23, 42, 0.6); --text-light: #f8fafc; --text-muted: #94a3b8;
+            --shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--primary); color: var(--text-light);
+            min-height:100vh; padding-bottom:50px; }
+        .bg-gradient-overlay { position:fixed; top:0; left:0; width:100%; height:100%;
+            background: radial-gradient(circle at top right, #1e293b, #0f172a); z-index:-1; }
+        .navbar { background-color: rgba(15,23,42,0.9); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border); padding:15px 0; margin-bottom:40px; }
+        .navbar-brand { font-weight:700; color:#fff !important; font-size:1.5rem; }
+        .navbar-brand span { color: var(--accent); }
+        .btn-dashboard { border:1px solid var(--glass-border); color:#fff; padding:8px 25px;
+            border-radius:50px; font-size:0.9rem; text-decoration:none; transition:0.3s;
+            background: rgba(255,255,255,0.05); }
+        .btn-dashboard:hover { background: var(--accent); border-color: var(--accent); color:white; }
+        .container1 { max-width:900px; margin:0 auto; background:var(--glass); border:1px solid var(--glass-border);
+            border-radius:20px; padding:40px; backdrop-filter:blur(10px); box-shadow:var(--shadow);
+            animation: fadeIn 0.8s ease-out; }
+        .title { font-size:2rem; margin-bottom:30px; text-align:center; font-weight:700; color:#fff; }
+        .search-section { background: rgba(255,255,255,0.05); padding:20px; border-radius:15px;
+            margin-bottom:30px; border:1px solid var(--glass-border); }
+        label, h4 { color: var(--text-muted); font-size:0.9rem; margin-bottom:8px; font-weight:500; display:block; }
+        .form-control, .form-select { background-color: var(--input-bg); border:1px solid var(--glass-border);
+            color:#fff; border-radius:10px; padding:12px 15px; font-size:1rem; }
+        .form-control:focus, .form-select:focus { background-color:#0f172a; border-color:var(--accent);
+            box-shadow: 0 0 0 3px rgba(16,185,129,0.2); color:white; outline:none; }
+        ::placeholder { color: rgba(255,255,255,0.3) !important; }
+        .btn-custom { background:linear-gradient(135deg,var(--accent),var(--accent-hover));
+            border:none; color:white; padding:12px 30px; border-radius:10px; font-weight:600;
+            transition:0.3s; box-shadow:0 4px 15px rgba(16,185,129,0.3); }
+        .btn-custom:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(16,185,129,0.4); color:white; }
+        .btn-block { width:100%; font-size:1.1rem; padding:15px; margin-top:20px; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="bg-gradient-overlay"></div>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="/">Loan<span>Oracle</span></a>
+        <div class="ms-auto">
+            <a href="{% url 'users:admin_dashboard' %}" class="btn-dashboard">
+                <i class="fas fa-chart-line me-2"></i>Dashboard
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container1">
+    <h3 class="title">Loan Prediction Model</h3>
+
+    <!-- Search by Username -->
+    <div class="search-section">
+        <div class="row g-2 align-items-end">
+            <div class="col-md-9">
+                <label for="search_username">Autofill Application</label>
+                <input type="text" id="search_username" class="form-control" placeholder="Enter username to fetch data...">
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-custom w-100" onclick="fetchCustomerData()">
+                    <i class="fas fa-search me-2"></i>Search
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loan Form -->
+    <form method="post" action="{% url 'users:loan' %}">
+        {% csrf_token %}
+        <div class="row g-3">
+            <!-- Existing Fields -->
+            <div class="col-md-6"><label>Applicant Income</label>
+                <input type="number" step="0.01" class="form-control" name="ApplicantIncome" required></div>
+            <div class="col-md-6"><label>Coapplicant Income</label>
+                <input type="number" step="0.01" class="form-control" name="CoapplicantIncome" required></div>
+            <div class="col-md-6"><label>Loan Amount</label>
+                <input type="number" step="0.01" class="form-control" name="LoanAmount" required></div>
+            <div class="col-md-6"><label>Loan Amount Term</label>
+                <input type="number" step="0.01" class="form-control" name="Loan_Amount_Term" required></div>
+            <div class="col-md-6"><label>Gender</label>
+                <select class="form-select" name="Gender" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select></div>
+            <div class="col-md-6"><label>Married</label>
+                <select class="form-select" name="Married" required>
+                    <option value="" disabled selected>Select Status</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select></div>
+            <div class="col-md-6"><label>Dependents</label>
+                <select class="form-select" name="Dependents" required>
+                    <option value="" disabled selected>Select Count</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3+</option>
+                </select></div>
+            <div class="col-md-6"><label>Education</label>
+                <select class="form-select" name="Education" required>
+                    <option value="" disabled selected>Select Education</option>
+                    <option value="0">Graduate</option>
+                    <option value="1">Not Graduate</option>
+                </select></div>
+            <div class="col-md-6"><label>Self Employed</label>
+                <select class="form-select" name="Self_Employed" required>
+                    <option value="" disabled selected>Select Option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select></div>
+            <div class="col-md-6"><label>Property Area</label>
+                <select class="form-select" name="Property_Area" required>
+                    <option value="" disabled selected>Select Area</option>
+                    <option value="0">Rural</option>
+                    <option value="1">Urban</option>
+                    <option value="2">Semiurban</option>
+                </select></div>
+
+            <!-- New Fields -->
+            <div class="col-md-6"><label>Marital Status</label>
+                <select class="form-select" name="Marital_status">
+                    <option value="" disabled selected>Select Status</option>
+                    <option value="0">Single</option>
+                    <option value="1">Married</option>
+                    <option value="2">Divorced</option>
+                </select></div>
+            <div class="col-md-6"><label>Employee Type</label>
+                <select class="form-select" name="Employee_type">
+                    <option value="" disabled selected>Select Type</option>
+                    <option value="0">Salaried</option>
+                    <option value="1">Self-Employed</option>
+                </select></div>
+            <div class="col-md-6"><label>Industrial Sector</label>
+                <input type="text" class="form-control" name="Industrial_sector" placeholder="Enter sector"></div>
+            <div class="col-md-6"><label>Existing Monthly EMIs</label>
+                <input type="number" step="0.01" class="form-control" name="Existing_monthly_EMIs"></div>
+            <div class="col-md-6"><label>Monthly Household Expenses</label>
+                <input type="number" step="0.01" class="form-control" name="Monthly_household_expenses"></div>
+            <div class="col-md-6"><label>Total Value of Assets</label>
+                <input type="number" step="0.01" class="form-control" name="Total_value_of_assets"></div>
+            <div class="col-md-6"><label>Loan Purpose</label>
+                <select class="form-select" name="Loan_purpose">
+                    <option value="" disabled selected>Select Purpose</option>
+                    <option value="0">car</option>
+                    <option value="1">dept</option>
+                    <option value="2">house</option>
+                    <option value="3">personal</option>
+                    <option value="4">travel</option>
+                </select></div>
+        </div>
+
+        <button type="submit" class="btn btn-custom btn-block">
+            Predict Loan Status <i class="fas fa-arrow-right ms-2"></i>
+        </button>
+    </form>
+</div>
+
+<script>
+function fetchCustomerData() {
+    const username = document.getElementById('search_username').value;
+    if (!username) { alert('Please enter a username.'); return; }
+
+    fetch(`/get-loan-by-username/?username=${username}`)
+    .then(res => {
+        if (!res.ok) throw new Error('No data found for this user.');
+        return res.json();
+    })
+    .then(data => {
+        const mapBinary = val => (val === 'Yes' || val === 1 || val === true) ? '1' : '0';
+
+        document.querySelector('[name="Gender"]').value = mapBinary(data.Gender);
+        document.querySelector('[name="Married"]').value = mapBinary(data.Married);
+        document.querySelector('[name="Dependents"]').value = data.Dependents;
+        document.querySelector('[name="Education"]').value = mapBinary(data.Education === 'Not Graduate');
+        document.querySelector('[name="Self_Employed"]').value = mapBinary(data.Self_Employed);
+        document.querySelector('[name="ApplicantIncome"]').value = data.ApplicantIncome ?? 0;
+        document.querySelector('[name="CoapplicantIncome"]').value = data.CoapplicantIncome ?? 0;
+        document.querySelector('[name="LoanAmount"]').value = data.LoanAmount ?? 0;
+        document.querySelector('[name="Loan_Amount_Term"]').value = data.Loan_Amount_Term ?? 0;
+        document.querySelector('[name="Property_Area"]').value = 
+            (data.Property_Area === 'Rural') ? '0' : (data.Property_Area === 'Urban') ? '1' : '2';
+
+        // Map new fields
+        const maritalMap = { 'Single': '0', 'Married': '1', 'Divorced': '2', 0:'0',1:'1',2:'2' };
+        const employeeMap = { 'Salaried': '0', 'Self-Employed': '1', 0:'0',1:'1' };
+        const purposeMap = { 'Home':'0','Car':'1','Education':'2','Business':'3','Other':'4', 0:'0',1:'1',2:'2',3:'3',4:'4' };
+
+        if(data.Marital_status !== undefined) document.querySelector('[name="Marital_status"]').value = maritalMap[data.Marital_status] ?? '0';
+        if(data.Employee_type !== undefined) document.querySelector('[name="Employee_type"]').value = employeeMap[data.Employee_type] ?? '0';
+        if(data.Loan_purpose !== undefined) document.querySelector('[name="Loan_purpose"]').value = purposeMap[data.Loan_purpose] ?? '0';
+        if(data.Industrial_sector !== undefined) document.querySelector('[name="Industrial_sector"]').value = data.Industrial_sector ?? '';
+        if(data.Existing_monthly_EMIs !== undefined) document.querySelector('[name="Existing_monthly_EMIs"]').value = data.Existing_monthly_EMIs ?? 0;
+        if(data.Monthly_household_expenses !== undefined) document.querySelector('[name="Monthly_household_expenses"]').value = data.Monthly_household_expenses ?? 0;
+        if(data.Total_value_of_assets !== undefined) document.querySelector('[name="Total_value_of_assets"]').value = data.Total_value_of_assets ?? 0;
+
+    })
+    .catch(err => alert(err.message));
+}
+</script>
+
+</body>
+</html>
+{% endblock %}

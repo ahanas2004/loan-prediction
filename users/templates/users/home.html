@@ -1,0 +1,451 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Portal | Home</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --primary: #0f172a;    /* Deep Navy */
+            --secondary: #1e293b;  /* Slate */
+            --accent: #10b981;     /* Emerald Green */
+            --accent-hover: #059669;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { text-decoration: none; }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--text-light) !important;
+            font-size: 1.5rem;
+        }
+        
+        .navbar-brand span { color: var(--accent); }
+
+        .nav-link {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover { color: var(--accent) !important; }
+
+        .btn-logout {
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            border-radius: 50px;
+            padding: 5px 20px;
+            transition: 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary) 0%, #111827 100%);
+            position: relative;
+            padding: 80px 0;
+        }
+
+        .hero-bg-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1565514020176-dbf2277e496e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- CARDS --- */
+        .action-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            backdrop-filter: blur(5px);
+        }
+
+        .action-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .card-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-glow {
+            background: linear-gradient(90deg, var(--accent), #059669);
+            border: none;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn-glow:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            color: white;
+        }
+        
+        .btn-outline-glow {
+            background: transparent;
+            border: 2px solid var(--glass-border);
+            color: white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .btn-outline-glow:hover {
+            border-color: var(--accent);
+            background: rgba(16, 185, 129, 0.1);
+            color: white;
+        }
+
+        /* --- CHAT WIDGET STYLES --- */
+        #chat-circle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transition: 0.3s;
+        }
+
+        #chat-circle:hover { transform: scale(1.1); }
+
+        .chat-box {
+            display: none;
+            position: fixed;
+            right: 30px;
+            bottom: 100px;
+            width: 350px;
+            max-width: 90vw;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .chat-box-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-box-body {
+            height: 350px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f1f5f9;
+        }
+
+        .chat-input-wrapper {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+        }
+
+        #chat-input {
+            border: 1px solid #cbd5e1;
+            border-radius: 20px;
+            padding: 8px 15px;
+            width: 100%;
+            outline: none;
+            color: #333;
+        }
+
+        .chat-submit {
+            background: none;
+            border: none;
+            color: var(--accent);
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #020617;
+            padding: 20px 0;
+            text-align: center;
+            color: #475569;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="preloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">Loan<span>Oracle</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" style="border-color: rgba(255,255,255,0.1);">
+                <span class="navbar-toggler-icon" style="background-image: url('data:image/svg+xml;charset=utf8,%3Csvg viewBox=\'0 0 30 30\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath stroke=\'rgba(255, 255, 255, 0.7)\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-miterlimit=\'10\' d=\'M4 7h22M4 15h22M4 23h22\'/%3E%3C/svg%3E');"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item me-3">
+                            <span class="nav-link text-white">Welcome, {{ user.first_name|default:user.username|title }}</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn-logout" href="{% url 'users:logout_view' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="#top">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section" id="top">
+        <div class="hero-bg-overlay"></div>
+        <div class="container content-wrapper">
+            
+            {% if user.is_authenticated %}
+            <div class="text-center mb-5">
+                <h6 style="color: var(--accent); letter-spacing: 2px; text-transform: uppercase;">Admin Dashboard</h6>
+                <h1 class="hero-title">Predictive Banking Analytics</h1>
+                <p class="hero-subtitle">Access your machine learning models and administrative tools below.</p>
+            </div>
+
+            <div class="row justify-content-center g-4">
+                <div class="col-md-4 col-lg-3">
+                    <div class="action-card">
+                        <div class="icon-box"><i class="fas fa-money-check-alt"></i></div>
+                        <h4 class="card-title">Loan Model</h4>
+                        <p class="card-text">Evaluate loan eligibility and credit risk factors.</p>
+                        <a href="{% url 'users:loan' %}" class="btn-glow">Access Model</a>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-lg-3">
+                    <div class="action-card">
+                        <div class="icon-box"><i class="fas fa-columns"></i></div>
+                        <h4 class="card-title">Dashboard</h4>
+                        <p class="card-text">View overall statistics and system reports.</p>
+                        <a href="{% url 'users:admin_dashboard' %}" class="btn-outline-glow">View Data</a>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
+            <div class="text-center mb-5">
+                <h6 style="color: var(--accent); letter-spacing: 2px; text-transform: uppercase;">Welcome to Loan Oracle</h6>
+                <h1 class="hero-title">Secure Banking Portal</h1>
+                <p class="hero-subtitle">Please select your portal type to proceed with secure login.</p>
+            </div>
+
+            <div class="row justify-content-center g-4">
+                <div class="col-md-5 col-lg-4">
+                    <div class="action-card">
+                        <div class="icon-box" style="background: rgba(46, 134, 222, 0.1); color: #2e86de;">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h4 class="card-title">Staff & Admin</h4>
+                        <p class="card-text">Administrative access for bank employees and system managers.</p>
+                        <a href="{% url 'users:adminhome' %}" class="btn-glow" style="background: linear-gradient(90deg, #2e86de, #0a3d62);">Admin Login</a>
+                    </div>
+                </div>
+
+                <div class="col-md-5 col-lg-4">
+                    <div class="action-card">
+                        <div class="icon-box">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4 class="card-title">Customer Portal</h4>
+                        <p class="card-text">Personal banking, loan applications, and account status.</p>
+                        <a href="{% url 'customer:customer_home' %}" class="btn-glow">Customer Login</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5">
+                <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">Need help accessing your account? <a href="#" style="color: var(--accent); text-decoration: underline;">Contact Support</a></p>
+            </div>
+            {% endif %}
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Loan Oracle Banking Co., Ltd. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Remove Preloader
+            $('#preloader').fadeOut('slow');
+
+            // Chat Widget Toggle logic
+            $("#chat-circle").click(function() {    
+                $("#chat-circle").toggle('scale');
+                $(".chat-box").toggle('scale');
+            });
+
+            $(".chat-box-toggle").click(function() {
+                $("#chat-circle").toggle('scale');
+                $(".chat-box").toggle('scale');
+            });
+
+            // Basic Chat Interaction (Frontend only demonstration)
+            $("#chat-submit").click(function(e) {
+                e.preventDefault();
+                var msg = $("#chat-input").val(); 
+                if(msg.trim() == ''){
+                    return false;
+                }
+                generate_message(msg, 'self');
+                $("#chat-input").val(''); // clear input
+            });
+
+            function generate_message(msg, type) {
+                // In a real app, this would append to .chat-logs
+                console.log("Message sent: " + msg);
+            }
+        });
+    </script>
+
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Loan EMI Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+      /* Global Styling */
+body {
+    background: #f4f6f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+h1, h2, h4 {
+    color: #2c3e50;
+    text-align: center;
+}
+
+.container-fluid {
+    padding: 30px;
+}
+
+/* Calculator Container */
+.calculator-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.calculator-container:hover {
+    transform: translateY(-5px);
+}
+
+.calculator-container h2 {
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+#monthlyEmi {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+/* Table Styling */
+table {
+    width: 90%;
+    margin: 30px auto;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: center;
+}
+
+table th {
+    background: #2c3e50;
+    color: #ecf0f1;
+    font-weight: 600;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #dff9fb;
+}
+
+/* Content Section */
+.content-section {
+    background: #ffffff;
+    margin: 20px auto;
+    padding: 25px;
+    width: 90%;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.content-section h2 {
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.content-section p, 
+.content-section ul {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.content-section ul {
+    padding-left: 20px;
+}
+
+.content-section ul li {
+    margin-bottom: 10px;
+}
+
+/* Chart Canvas */
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* Media Query for Mobile */
+@media (max-width: 768px) {
+    .calculator-container {
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    .content-section {
+        width: 95%;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <div class="calculator-container p-4">
+                    <h2>Gold Loan EMI </h2>
+                    <form>
+                        <div class="form-group">
+                            <label>Loan Amount (₹): <span id="loanAmountLabel">50000</span></label>
+                            <input type="range" class="form-control-range" id="loanAmountRange" min="10000" max="500000" step="1000" value="50000">
+                        </div>
+                        <div class="form-group">
+                            <label>Interest Rate (%): <span id="interestRateLabel">12</span></label>
+                            <input type="range" class="form-control-range" id="interestRateRange" min="5" max="25" step="0.1" value="12">
+                        </div>
+                        <div class="form-group">
+                            <label>Loan Tenure (Months): <span id="loanTenureLabel">12</span></label>
+                            <input type="range" class="form-control-range" id="loanTenureRange" min="3" max="36" step="1" value="12">
+                        </div>
+                    </form>
+                    <div class="mt-4">
+                        <h4>Monthly EMI: <span id="monthlyEmi">₹0</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="calculator-container p-4">
+                    <canvas id="emiChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1>Gold Loan Details (2024 - 2050)</h1>
+    
+    <table>
+        <tr>
+            <th>Year</th>
+            <th>Gold Loan Interest Rate (%)</th>
+            <th>Maximum Loan Amount</th>
+            <th>Repayment Period</th>
+        </tr>
+        <script>
+            let startYear = 2024;
+            let endYear = 2050;
+            let tableContent = "";
+            for (let year = startYear; year <= endYear; year++) {
+                let interestRate = (7 + (Math.random() * 5)).toFixed(2);
+                let maxLoanAmount = `$${(10000 + (Math.random() * 5000)).toFixed(0)}`;
+                let repaymentPeriod = "12-60 months";
+                tableContent += `<tr><td>${year}</td><td>${interestRate}%</td><td>${maxLoanAmount}</td><td>${repaymentPeriod}</td></tr>`;
+            }
+            document.write(tableContent);
+        </script>
+    </table>
+    
+    <div class="content-section">
+        <h2>Gold Loan Overview</h2>
+        <p>Gold loans are a popular secured lending option where borrowers pledge gold jewelry or ornaments as collateral to avail immediate funds. The loan amount is sanctioned based on the weight and purity of the gold. Typically, banks and NBFCs provide up to 75% of the gold’s market value as the loan amount. Interest rates may vary between 7% to 15% per annum, depending on the lender and market conditions.</p>
+        <p>These loans are an ideal solution for short-term financial needs such as education, medical expenses, business capital, or emergencies, as they involve minimal paperwork and faster processing.</p>
+    </div>
+    
+    <div class="content-section">
+        <h2>Factors Affecting Gold Loan Interest Rates</h2>
+        <p>Several economic and market factors impact the interest rates of gold loans:</p>
+        <ul>
+            <li><strong>Global Gold Prices:</strong> Fluctuating gold prices directly influence the loan amount eligibility and interest rates.</li>
+            <li><strong>Inflation Rate:</strong> Higher inflation often leads to increased interest rates to control market liquidity.</li>
+            <li><strong>Government Monetary Policies:</strong> Policies like changes in repo rates can affect loan interest rates.</li>
+            <li><strong>Banking Sector Regulations:</strong> Reserve Bank of India (RBI) guidelines and regulations play a role in rate decisions.</li>
+            <li><strong>Demand & Supply of Gold:</strong> Market demand for gold also influences the lending rates and loan-to-value ratio.</li>
+        </ul>
+    </div>
+    
+    <div class="content-section">
+        <h2>Eligibility for Gold Loan</h2>
+        <ul>
+            <li>Applicant must be an Indian citizen aged between 18 and 65 years.</li>
+            <li>Should possess gold ornaments, coins, or jewelry of required purity (usually 18 to 24 carats).</li>
+            <li>Applicable to salaried individuals, self-employed persons, farmers, and business owners.</li>
+        </ul>
+    </div>
+    
+    <div class="content-section">
+        <h2>Required Documents</h2>
+        <ul>
+            <li>Identity Proof (Aadhaar Card, PAN Card, Passport, Voter ID, etc.)</li>
+            <li>Address Proof (Utility bill, Passport, Aadhaar Card, Driving License, etc.)</li>
+            <li>Recent Passport-size Photographs</li>
+            <li>Loan Application Form duly filled and signed</li>
+        </ul>
+    </div>
+    
+    <div class="content-section">
+        <h2>Advantages of Gold Loans</h2>
+        <ul>
+            <li>Quick Processing and Instant Loan Disbursal</li>
+            <li>No Credit Score or Income Proof Requirement</li>
+            <li>Lower Interest Rates Compared to Unsecured Personal Loans</li>
+            <li>Flexible Repayment Options with Bullet Payment or EMI Schemes</li>
+            <li>Minimal Documentation and Verification Process</li>
+            <li>Possibility of Loan Renewal or Top-up Facility</li>
+        </ul>
+    </div>
+    
+    <div class="content-section">
+        <h2>Risks & Considerations</h2>
+        <ul>
+            <li>Risk of Gold Asset Seizure in case of Non-repayment</li>
+            <li>Fluctuating Gold Prices may affect Loan-to-Value Ratio</li>
+            <li>High Processing Fees and Penal Interest for Delayed Payments</li>
+            <li>Short Tenure Loans leading to Repayment Pressure</li>
+        </ul>
+    </div>
+    
+    <div class="content-section">
+        <h2>Gold Loan Trends (2024-2050)</h2>
+        <p>The gold loan market is witnessing rapid growth driven by digital banking innovations and increased gold asset ownership. By 2050, gold loans are projected to become more technology-driven, offering:</p>
+        <ul>
+            <li>AI-based Risk Assessment & Automated Loan Approvals</li>
+            <li>Blockchain-backed Digital Gold Loan Agreements</li>
+            <li>Enhanced Security with Digital Gold Vaults</li>
+            <li>Real-time Gold Valuation & Dynamic Interest Rates</li>
+            <li>Minimal Human Intervention in Loan Processing</li>
+        </ul>
+    </div>
+    
+  
+    
+    <script>
+        const loanAmountRange = document.getElementById('loanAmountRange');
+        const interestRateRange = document.getElementById('interestRateRange');
+        const loanTenureRange = document.getElementById('loanTenureRange');
+        const loanAmountLabel = document.getElementById('loanAmountLabel');
+        const interestRateLabel = document.getElementById('interestRateLabel');
+        const loanTenureLabel = document.getElementById('loanTenureLabel');
+        const monthlyEmi = document.getElementById('monthlyEmi');
+        const emiChartCanvas = document.getElementById('emiChart');
+
+        const updateLoanAmount = () => {
+            loanAmountLabel.textContent = loanAmountRange.value;
+            updateEmi();
+        };
+        
+        const updateInterestRate = () => {
+            interestRateLabel.textContent = interestRateRange.value;
+            updateEmi();
+        };
+        
+        const updateLoanTenure = () => {
+            loanTenureLabel.textContent = loanTenureRange.value;
+            updateEmi();
+        };
+
+        const updateEmi = () => {
+            const loanAmount = parseFloat(loanAmountRange.value);
+            const interestRate = parseFloat(interestRateRange.value) / 100 / 12;
+            const loanTenure = parseFloat(loanTenureRange.value);
+
+            const emi = (loanAmount * interestRate * Math.pow(1 + interestRate, loanTenure)) / (Math.pow(1 + interestRate, loanTenure) - 1);
+            monthlyEmi.textContent = `₹${emi.toFixed(2)}`;
+
+            updateChart(loanAmount, interestRate, loanTenure, emi);
+        };
+
+        const updateChart = (loanAmount, interestRate, loanTenure, emi) => {
+            const principalData = loanAmount.toFixed(2);
+            const interestData = (emi * loanTenure - loanAmount).toFixed(2);
+
+            const chartData = {
+                labels: ['Principal Amount', 'Total Interest'],
+                datasets: [{
+                    label: 'Payment Breakdown',
+                    data: [principalData, interestData],
+                    backgroundColor: ['#36a2eb', '#ffcd56']
+                }]
+            };
+
+            if (window.myChart) {
+                window.myChart.data = chartData;
+                window.myChart.update();
+            } else {
+                window.myChart = new Chart(emiChartCanvas, {
+                    type: 'doughnut',
+                    data: chartData
+                });
+            }
+        };
+
+        loanAmountRange.addEventListener('input', updateLoanAmount);
+        interestRateRange.addEventListener('input', updateInterestRate);
+        loanTenureRange.addEventListener('input', updateLoanTenure);
+
+        updateEmi();
+    </script>
+</body>
+</html>
+

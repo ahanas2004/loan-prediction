@@ -1,0 +1,521 @@
+
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    /* Reset & Base */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #F4F5FA;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Container */
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.header h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 35px;
+    color: #6258A8;
+}
+
+/* Sub-container */
+.sub-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Left View */
+.view {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Details */
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detail p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+input[type="range"] {
+    width: 100%;
+    margin-top: 8px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#price-container {
+    background-color: #E6E4FA;
+    color: #6258A8;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Breakup */
+.breakup {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Loan Details */
+.loan-details {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #F8F8FF;
+    border-radius: 12px;
+}
+
+.chart-details {
+    text-align: center;
+}
+
+.chart-details p {
+    margin: 8px 0;
+}
+
+/* Container1 */
+.container1 {
+    max-width: 1100px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.container1 h2 {
+    color: #6258A8;
+    text-align: center;
+}
+
+.container1 p, 
+.container1 ul li {
+    color: #333;
+    line-height: 1.8;
+}
+
+.container1 h3 {
+    margin-top: 20px;
+    color: #9088D2;
+}
+
+.highlight {
+    color: #6258A8;
+    font-weight: 600;
+}
+
+/* Flex Section */
+.flex-1 {
+    margin-top: 30px;
+    background-color: #E2E8F0;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.flex-1 img {
+    width: 100%;
+    max-width: 250px;
+    border-radius: 10px;
+}
+
+.flex-1 a {
+    color: #333;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.flex-1 a:hover {
+    color: #6258A8;
+}
+
+.uppercase {
+    color: #6258A8;
+    margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sub-container {
+        flex-direction: column;
+    }
+
+    .loan-details {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .flex-1 {
+        text-align: center;
+    }
+}
+
+</style>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 style="color: #6258A8">Personal Loan Calculator</h1>
+           
+        </div>
+        <div class="sub-container">
+            <div class="view">
+                <div class="details">
+                    <div>
+                        <div class="detail">
+                            <p style="color: #9088D2">Amount</p>
+                            <p id="loan-amt-text" style="color: #6258A8"></p>
+                        </div>
+                        <input type="range" id="loan-amount" min="0" max="10000000" step="50000">
+                    </div>
+                    <div>
+                        <div class="detail">
+                            <p style="color: #9088D2">Length</p>
+                            <p id="loan-period-text" style="color: #6258A8"></p>
+                        </div>
+                        <input type="range" id="loan-period" min="1" max="30" step="1">
+                    </div>
+                    <div>
+                        <div class="detail">
+                            <p style="color: #9088D2">% Interest</p>
+                            <p id="interest-rate-text" style="color: #6258A8"></p>
+                        </div>
+                        <input type="range" id="interest-rate" min="1" max="15" step="0.5">
+                    </div>
+                </div>
+                <div class="footer">
+                    <p id="price-container"><span id="price">0</span>/mo</p>
+                </div>
+            </div>
+            <div class="breakup">
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+        <div>
+            <div class="loan-details">
+                <div class='chart-details'>
+                    <p style="color: #9088D2">Principal</p>
+                    <p id="cp" style="color: #130F31; font-size: 17px;"></p>
+                </div>
+                <div class='chart-details'>
+                    <p style="color: #9088D2">Interest</p>
+                    <p id="ci" style="color: #130F31; font-size: 17px;"></p>
+                </div>
+                <div class='chart-details'>
+                    <p style="color: #9088D2">Total Payable</p>
+                    <p id="ct" style="color: #130F31; font-size: 17px;"></p>
+                </div>
+            </div>
+            <canvas id="lineChart" style="max-width: 1050px;max-height: 900px;"></canvas>
+        </div>
+    </div>
+    <div class="container1">
+        <h2>ID Verification Result</h2>
+
+        {% if verification == "Verified" %}
+
+        <div class="alert alert-success">
+        User Verified Successfully
+        </div>
+
+        {% else %}
+
+        <div class="alert alert-danger">
+        Aadhar or PAN Not Found
+        </div>
+
+        {% endif %}
+
+        <h2>Personal Loan Details</h2>
+        <p>A personal loan is a type of unsecured loan that helps you meet your financial needs. It can be used for various purposes like medical expenses, home renovation, education, wedding expenses, and more.</p>
+        
+        <h3>Features and Benefits:</h3>
+        <ul>
+            <li>Flexible loan amount ranging from <span class="highlight">$1,000 to $50,000</span></li>
+            <li>Quick approval process with minimal documentation</li>
+            <li>Competitive interest rates starting from <span class="highlight">10% per annum</span></li>
+            <li>Repayment tenure of up to <span class="highlight">5 years</span></li>
+            <li>No collateral required</li>
+        </ul>
+        
+        <h3>Eligibility Criteria:</h3>
+        <ul>
+            <li>Applicant must be between <span class="highlight">21 to 60 years</span> of age</li>
+            <li>Minimum monthly income of <span class="highlight">$1,500</span></li>
+            <li>Stable employment with at least <span class="highlight">6 months</span> in current job</li>
+        </ul>
+        
+        <h3>Documents Required:</h3>
+        <ul>
+            <li>Identity proof (Aadhar Card, Passport, Driving License)</li>
+            <li>Address proof (Utility Bill, Rental Agreement)</li>
+            <li>Income proof (Salary Slips, Bank Statements, Tax Returns)</li>
+        </ul>
+        <h3>Click the link read more...</h3>
+        <div
+          class="flex-1 text-gray-700 text-center bg-gray-400 px-5 py-5 m-2 rounded"
+        >
+          <div class="lg:flex lg:items-center">
+            <div class="lg:flex-shrink-0">
+              <img class="rounded-lg lg:w-64" src="https://img.freepik.com/free-photo/house-investments-elements-assortment_23-2148793805.jpg
+    " alt="" />
+            </div>
+            <div class="mt-4 lg:mt-0 lg:ml-6">
+              <div
+                class="uppercase tracking-wide text-sm text-indigo-600 font-bold" style="font-size: 25px;"
+              >
+                Personal Loans
+              </div><br>
+              <a
+                href="https://en.wikipedia.org/wiki/Loan"
+                class="block mt-1 text-lg leading-tight font-semibold text-gray-900 hover:underline"
+                >Finding customers for your new business Loans</a
+              ><br>
+              <a
+                href="https://en.wikipedia.org/?title=Personal_loan&redirect=no"
+                class="block mt-1 text-lg leading-tight font-semibold text-gray-900 hover:underline"
+                >Finding customers for your new business Personal Loans</a
+              ><br>
+              <a
+                href="https://en.wikipedia.org/wiki/Personal_finance"
+                class="block mt-1 text-lg leading-tight font-semibold text-gray-900 hover:underline"
+                >Finding customers for your new business Personal finance</a
+              ><br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+</body>
+<script>
+    var P, R, N, pie, line;
+var loan_amt_slider = document.getElementById("loan-amount");
+var int_rate_slider = document.getElementById("interest-rate");
+var loan_period_slider = document.getElementById("loan-period");
+
+// update loan amount
+loan_amt_slider.addEventListener("input", (self) => {
+	document.querySelector("#loan-amt-text").innerText =
+		parseInt(self.target.value).toLocaleString("en-US") + "$";
+	P = parseFloat(self.target.value);
+	displayDetails();
+});
+
+// update Rate of Interest
+int_rate_slider.addEventListener("input", (self) => {
+	document.querySelector("#interest-rate-text").innerText =
+		self.target.value + "%";
+	R = parseFloat(self.target.value);
+	displayDetails();
+});
+
+// update loan period
+loan_period_slider.addEventListener("input", (self) => {
+	document.querySelector("#loan-period-text").innerText =
+		self.target.value + " years";
+	N = parseFloat(self.target.value);
+	displayDetails();
+});
+
+// calculate total Interest payable
+function calculateLoanDetails(p, r, emi) {
+	/*
+		p: principal
+		r: rate of interest
+		emi: monthly emi
+	*/
+	let totalInterest = 0;
+	let yearlyInterest = [];
+	let yearPrincipal = [];
+	let years = [];
+	let year = 1;
+	let [counter, principal, interes] = [0, 0, 0];
+	while (p > 0) {
+		let interest = parseFloat(p) * parseFloat(r);
+		p = parseFloat(p) - (parseFloat(emi) - interest);
+		totalInterest += interest;
+		principal += parseFloat(emi) - interest;
+		interes += interest;
+		if (++counter == 12) {
+			years.push(year++);
+			yearlyInterest.push(parseInt(interes));
+			yearPrincipal.push(parseInt(principal));
+			counter = 0;
+		}
+	}
+	line.data.datasets[0].data = yearPrincipal;
+	line.data.datasets[1].data = yearlyInterest;
+	line.data.labels = years;
+	return totalInterest;
+}
+
+// calculate details
+function displayDetails() {
+	let r = parseFloat(R) / 1200;
+	let n = parseFloat(N) * 12;
+
+	let num = parseFloat(P) * r * Math.pow(1 + r, n);
+	let denom = Math.pow(1 + r, n) - 1;
+	let emi = parseFloat(num) / parseFloat(denom);
+
+	let payabaleInterest = calculateLoanDetails(P, r, emi);
+
+	let opts = '{style: "decimal", currency: "US"}';
+
+	document.querySelector("#cp").innerText =
+		parseFloat(P).toLocaleString("en-US", opts) + "$";
+
+	document.querySelector("#ci").innerText =
+		parseFloat(payabaleInterest).toLocaleString("en-US", opts) + "$";
+
+	document.querySelector("#ct").innerText =
+		parseFloat(parseFloat(P) + parseFloat(payabaleInterest)).toLocaleString(
+			"en-US",
+			opts
+		) + "$";
+
+	document.querySelector("#price").innerText =
+		parseFloat(emi).toLocaleString("en-US", opts) + "$";
+
+	pie.data.datasets[0].data[0] = P;
+	pie.data.datasets[0].data[1] = payabaleInterest;
+	pie.update();
+	line.update();
+}
+
+// Initialize everything
+function initialize() {
+	document.querySelector("#loan-amt-text").innerText =
+		parseInt(loan_amt_slider.value).toLocaleString("en-US") + "$";
+	P = parseFloat(document.getElementById("loan-amount").value);
+
+	document.querySelector("#interest-rate-text").innerText =
+		int_rate_slider.value + "%";
+	R = parseFloat(document.getElementById("interest-rate").value);
+
+	document.querySelector("#loan-period-text").innerText =
+		loan_period_slider.value + " years";
+	N = parseFloat(document.getElementById("loan-period").value);
+
+	line = new Chart(document.getElementById("lineChart"), {
+		data: {
+			datasets: [
+				{
+					type: "line",
+					label: "Yearly Principal paid",
+					borderColor: "rgb(54, 162, 235)",
+					data: []
+				},
+				{
+					type: "line",
+					label: "Yearly Interest paid",
+					borderColor: "rgb(255, 99, 132)",
+					data: []
+				}
+			],
+			labels: []
+		},
+		options: {
+			plugins: {
+				title: {
+					display: true,
+					text: "Yearly Payment Breakdown"
+				}
+			},
+			scales: {
+				x: {
+					title: {
+						color: "grey",
+						display: true,
+						text: "Years Passed"
+					}
+				},
+				y: {
+					title: {
+						color: "grey",
+						display: true,
+						text: "Money in Rs."
+					}
+				}
+			}
+		}
+	});
+
+	pie = new Chart(document.getElementById("pieChart"), {
+		type: "doughnut",
+		data: {
+			labels: ["Principal", "Interest"],
+			datasets: [
+				{
+					label: "Home Loan Details",
+					data: [0, 0],
+					backgroundColor: ["rgb(54, 162, 235)", "rgb(255, 99, 132)"],
+					hoverOffset: 4
+				}
+			]
+		},
+		options: {
+			plugins: {
+				title: {
+					display: true,
+					text: "Payment Breakup"
+				}
+			}
+		}
+	});
+	displayDetails();
+}
+initialize();
+
+</script>
+</html>
+
+    
+{% endblock content %}
+

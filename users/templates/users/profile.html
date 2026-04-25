@@ -1,0 +1,336 @@
+
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="TemplateMo">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <title>Finance Business HTML5 Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="/static/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/static/assets/css/templatemo-finance-business.css">
+    <link rel="stylesheet" href="/static/assets/css/owl.css">
+<!--
+
+Finance Business TemplateMo
+
+https://templatemo.com/tm-545-finance-business
+
+-->
+  </head>
+
+  <body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>  
+    <!-- ***** Preloader End ***** -->
+
+    <!-- Header -->
+    <div class="sub-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-xs-12">
+            <ul class="left-info">
+              <li>
+                <a href="#">
+                  <i class="fa fa-clock-o"></i>
+                  <span id="current-time"></span> <!-- Dynamic Time -->
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-calendar"></i>
+                  <span id="current-date"></span> <!-- Dynamic Date -->
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-phone"></i>090-080-0760
+                </a>
+              </li>
+            </ul>
+          </div>
+          <script>
+            window.onload = function() {
+              // Display current time
+              function updateTime() {
+                var currentTime = new Date();
+                var hours = currentTime.getHours();
+                var minutes = currentTime.getMinutes();
+                var seconds = currentTime.getSeconds();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // 0 hours should be 12
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+                var timeStr = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+                document.getElementById('current-time').textContent = timeStr;
+              }
+            
+              // Display current date
+              function updateDate() {
+                var currentDate = new Date();
+                var day = currentDate.getDate();
+                var month = currentDate.getMonth() + 1; // Months are zero-indexed
+                var year = currentDate.getFullYear();
+                var dateStr = month + '/' + day + '/' + year;
+                document.getElementById('current-date').textContent = dateStr;
+              }
+            
+              // Update every second
+              setInterval(updateTime, 1000);
+              updateDate();  // Initial call to set the date
+            }
+            
+          </script>
+          <div class="col-md-4">
+            <ul class="right-icons">
+              <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+              <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+              <li><a href="#"><i class="fa fa-behance"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <header class="">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container">
+         
+          <h1 class="navbar-brand" style="color: rgb(0, 114, 207);">User: {{user.username.title|default:'Guest'}}</h1><br>
+          <a class="navbar-brand" href="/" ><h6 style="color: rgb(207, 0, 0);">Home</h6></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'Basic_report' %}" style="color: rgb(0, 114, 207);">Churn Report</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'Metrics_report' %}" style="color: rgb(0, 114, 207);" >Churn Metrics</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'Basic_report1' %}" style="color: rgb(0, 114, 207);">Loan Report</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'Metrics_report1' %}" style="color: rgb(0, 114, 207);">Loan Metrics</a>
+              </li>
+              
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'churn' %}" style="color: rgb(0, 114, 207);">Churn</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'loan' %}" style="color: rgb(0, 114, 207);">Loan</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'churn_db' %}" style="color: rgb(0, 114, 207);">Churn DB</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'loan_db' %}" style="color: rgb(0, 114, 207);">Loan DB</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'users-profile' %}" style="color: rgb(0, 114, 207);">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout_view' %}" style="color: rgb(0, 114, 207);">Logout</a>
+              </li>
+              
+             
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
+      </header>
+     <!-- Bootstrap core JavaScript -->
+     <script src="/static/vendor/jquery/jquery.min.js"></script>
+     <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+ 
+     <!-- Additional Scripts -->
+     <script src="/static/assets/js/custom.js"></script>
+     <script src="/static/assets/js/owl.js"></script>
+     <script src="/static/assets/js/slick.js"></script>
+     <script src="/static/assets/js/accordions.js"></script>
+ 
+     <script language = "text/Javascript"> 
+       cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
+       function clearField(t){                   //declaring the array outside of the
+       if(! cleared[t.id]){                      // function makes it static and global
+           cleared[t.id] = 1;  // you could use true and false, but that's more typing
+           t.value='';         // with more chance of typos
+           t.style.color='#fff';
+           }
+       }
+     </script><br><br><br><br><br><br>
+ 
+<style>
+    /* General Body Styling */
+    
+
+    /* Profile Container */
+    .profile-container {
+        background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent white background */
+        max-width: 1350px;
+        width: 100%;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+    /* Profile Image Styling */
+    .profile-image {
+        
+        border-radius: 10%;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    /* Form Styling */
+    .form-content {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+        font-size: 16px;
+        color: #0056b3;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    /* Button Styling */
+    .button-group {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-right: 10px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .profile-container {
+            padding: 20px;
+        }
+        .form-content {
+            padding: 20px;
+        }
+    }
+</style>
+
+
+<div class="profile-container">
+    <h2 style="color: #ffffff;">Your Profile</h2>
+    <img class="profile-image" src="{{ user.profile.avatar.url }}" alt="Profile Image">
+    {% if user_form.errors %}
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <div id="form_errors">
+            {% for key, value in user_form.errors.items %}
+                <strong>{{ value }}</strong>
+            {% endfor %}
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}
+    <div class="form-content">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                {{ user_form.username }}
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                {{ user_form.email }}
+            </div>
+            <hr>
+            <div class="form-group">
+                <label for="avatar">Change Avatar:</label>
+                {{ profile_form.avatar }}
+            </div>
+            <div class="form-group">
+                <label for="bio">Bio:</label>
+                {{ profile_form.bio }}
+            </div>
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary" id="save-btn">Save Changes</button>
+                <button type="reset" class="btn btn-secondary" id="reset-btn">Reset</button>
+            </div>
+        </form>
+    </div>
+    {% if user_form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <strong>Error:</strong> Please correct the form errors.
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}

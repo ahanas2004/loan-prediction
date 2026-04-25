@@ -1,0 +1,156 @@
+
+{% load static %}
+{% block content %}
+
+<style>
+/* Container and Card Layout */
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  background-image: url(https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+ 
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+ 
+}
+.container {
+  max-width: 1200px;
+}
+
+.md\:flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+/* Card Styles */
+.card {
+  background-color: #ffffff;
+  border-radius: 50px;
+  box-shadow: 0 6px 20px rgb(0, 0, 0);
+  overflow: hidden;
+  margin: 20px;
+  width: 500px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgb(0, 68, 255);
+}
+
+/* Card Image */
+.card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+/* Card Content */
+.card-content {
+  padding: 20px;
+  text-align: center;
+}
+
+.card-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333333;
+}
+
+.card-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  border: 1px solid #007bff;
+  padding: 8px 16px;
+  border-radius: 50px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card-link:hover {
+  background-color:rgb(29, 173, 0);
+  color: #ffffff;
+  border-color: rgb(29, 173, 0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .md\:flex {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card {
+    width: 90%;
+  }
+}
+
+</style>
+
+    
+    <!-- CARD COLUMNS -->
+    <div class="container mt-5 mx-auto px-2">
+      <div class="md:flex">
+        <div class="card">
+          <div class="lg:flex lg:items-center">
+            <div class="lg:flex-shrink-0">
+              <img class="card-img" src="https://t3.ftcdn.net/jpg/09/54/56/78/360_F_954567877_eVvuM8on2NxPSQTeG0sFNheLDtQp06jn.jpg" alt="Personal Loan" />
+            </div>
+            <div class="card-content">
+              <div class="card-title">Personal Loan</div><br>
+              <a href="{% url 'output' %}" class="card-link">Personal Loan Details</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="lg:flex lg:items-center">
+            <div class="lg:flex-shrink-0">
+              <img class="card-img" src="https://www.i2ifunding.com/assets/bank-education-loan.jpg" alt="Education Loan" />
+            </div>
+            <div class="card-content">
+              <div class="card-title">Education Loan</div><br>
+              <a href="{% url 'output1' %}" class="card-link">Education Loan Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="container mt-5 mx-auto px-2">
+      <div class="md:flex">
+        <div class="card">
+          <div class="lg:flex lg:items-center">
+            <div class="lg:flex-shrink-0">
+              <img class="card-img" src="https://www.commercialcoopbank.com/images/loans/11.jpg" alt="Home Loan" />
+            </div>
+            <div class="card-content">
+              <div class="card-title">Home Loan</div><br>
+              <a href="{% url 'output2' %}" class="card-link">Home Loan Details</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="lg:flex lg:items-center">
+            <div class="lg:flex-shrink-0">
+              <img class="card-img" src="https://thebengal.in/wp-content/uploads/2024/07/5edf5f50-1282-4900-af7d-b16ee90184c9.jpg" alt="Gold Loan" />
+            </div>
+            <div class="card-content">
+              <div class="card-title">Gold Loan</div><br>
+              <a href="{% url 'output3' %}" class="card-link">Gold Loan Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+       
+        
+        
+   
+{% endblock content %}
+
