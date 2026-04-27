@@ -390,3 +390,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 Made with ❤️ by the LoanOracle Team | KCG College of Technology, Chennai | 2026
 
 </div>
+
+
+---\n*Last updated: 2026-04-27*
